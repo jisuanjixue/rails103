@@ -1,4 +1,5 @@
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<!-- 导航栏 -->
+<nav class="navbar navbar-default navbar-inverse" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
@@ -10,24 +11,73 @@
           <a class="navbar-brand" href="/">Rails 101</a>
         </div>
 
-        <div class="collapse navbar-collapse">
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                <% if !current_user %>
-                   <li><%= link_to("注册", new_user_registration_path) %></li>
-                   <li><%= link_to("登录", new_user_session_path) %></li>
+                   <!-- <li><%= link_to(content_tag(:i, "注册", class: "fa fa-user"), new_user_registration_path) %></li>
+                   <li><%= link_to(content_tag(:i, "登录", class: "fa fa-sign-in"), new_user_session_path) %></li> -->
+                    <li><a href="#" data-toggle="modal" data-target="#signup-modal">注册</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#login-modal">登入</a></li>
                    <% else %>
                  <li class="dropdown">
                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                          Hi!, <5= current_user.email %>
                          <b class="cart"></b>
                       </a>
-                      <ul class="dropdown-menu"> 
+                      <ul class="dropdown-menu">
                         <li> <%= link_to("退出", destroy_user_session_path, method: :delete) %> </li>
                       </ul>
                  </li>
               <% end %>
             </ul>
+
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                 <input type="text" class="form-control" placeholder="search">
+              </div>
+              <button type="submit" class="btn btn-default">提交</button>
+            </form>
         </div>
     </div>
-</nav> 
- 
+</nav>
+
+
+<!-- 弹窗登录 -->
+
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog" role="document">
+    <div class="loginmodal-container">
+       <h2>登录</h2>
+       <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+         <div class="form-inputs">
+           <%= f.input :email, required: false, autofocus: true, :label => "邮箱" %>
+           <%= f.input :password, required: false, :label => "密码" %>
+           <%= f.input :remember_me, :label => "记住密码", as: :boolean if devise_mapping.rememberable?  %>
+         </div>
+         <div class="form-actions">
+           <%= f.button :submit, "登录" %>
+         </div>
+       <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="loginmodal-container">
+      <h2>注册</h2>
+        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+        <%= f.error_notification %>
+        <div class="form-inputs">
+          <%= f.input :email, required: true, autofocus: true, :label => "邮箱" %>
+          <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), :label => "密码" %>
+          <%= f.input :password_confirmation, required: true, :label => "密码确认" %>
+        </div>
+        <div class="form-actions">
+            <%= f.button :submit, "注册" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
