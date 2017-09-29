@@ -10,9 +10,9 @@
       <th>#</th>
       <th>标题</th>
       <th>描述</th>
-      <th>编辑</th>
-      <th>删除</th>
       <th>创建者</th>
+      <th>操作</th>
+
     </tr>
   </thead>
 
@@ -22,9 +22,14 @@
         <td>#</td>
       <td><%= link_to(group.title, group_path(group)) %></td>
       <td><%= group.description %></td>
-            <td><%= link_to("编辑", edit_group_path(group), :class => "btn btn-xs btn-primary") %></td>
-            <td><%= link_to("删除", group_path(group), :class => "btn btn-xs btn-primary", :method => :delete, data: { confirm: "你确定要删除吗?"}) %></td>
-            <td><%= group.user.email %></td>
+       <td><%= group.user.email %></td>
+
+            <td>
+              <% if current_user && current_user == group.user %>
+              <%= link_to("编辑", edit_group_path(group), :class => "btn btn-xs btn-primary") %>
+            <%= link_to("删除", group_path(group), :class => "btn btn-xs btn-primary", :method => :delete, data: { confirm: "你确定要删除吗?"}) %>
+              <% end %>
+            </td>
       </tr>
         <% end %>
     </tbody>
