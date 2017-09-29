@@ -10,6 +10,9 @@
       <th>#</th>
       <th>标题</th>
       <th>描述</th>
+      <th>编辑</th>
+      <th>删除</th>
+      <th>创建者</th>
     </tr>
   </thead>
 
@@ -21,6 +24,7 @@
       <td><%= group.description %></td>
             <td><%= link_to("编辑", edit_group_path(group), :class => "btn btn-xs btn-primary") %></td>
             <td><%= link_to("删除", group_path(group), :class => "btn btn-xs btn-primary", :method => :delete, data: { confirm: "你确定要删除吗?"}) %></td>
+            <td><%= group.user.email %></td>
       </tr>
         <% end %>
     </tbody>
