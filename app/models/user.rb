@@ -8,4 +8,8 @@ class User < ApplicationRecord
   has_many :posts
   has_many :GroupRelationships
   has_many :participated_groups, :through => :GroupRelationships, :source => :group
+
+  def is_member_of?(group)
+    participated_groups.include?(group)
+  end
 end
